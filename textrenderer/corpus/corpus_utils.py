@@ -4,7 +4,7 @@ from textrenderer.corpus.list_corpus import ListCorpus
 from textrenderer.corpus.random_corpus import RandomCorpus
 
 
-def corpus_factory(corpus_mode: str, chars_file: str, corpus_dir: str, length: int):
+def corpus_factory(corpus_mode: str, chars_file: str, corpus_dir: str, length: int, max_length: int):
     corpus_classes = {
         "random": RandomCorpus,
         "chn": ChnCorpus,
@@ -21,4 +21,4 @@ def corpus_factory(corpus_mode: str, chars_file: str, corpus_dir: str, length: i
     if length == 10 and corpus_mode == 'eng':
         length = 3
 
-    return corpus_class(chars_file=chars_file, corpus_dir=corpus_dir, length=length)
+    return corpus_class(chars_file=chars_file, corpus_dir=corpus_dir, length=length, max_length=max_length)

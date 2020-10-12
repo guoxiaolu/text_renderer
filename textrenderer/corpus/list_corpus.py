@@ -16,7 +16,19 @@ class ListCorpus(Corpus):
                 lines = f.readlines()
 
             for line in lines:
-                self.corpus.append(line.strip())
+                con = line.strip()
+                if len(con) > self.max_length:
+                    print ('too long text:%s'%(con))
+                    continue
+                is_mark = False
+                for c in con:
+                    if c not in self.charsets:
+                        is_mark = True
+                        break
+                if not is_mark:
+                    self.corpus.append(line.strip())
+                else:
+                    print ('unstandard word:%s,text:%s'%(c, con))
 
         print("Total lines: {}".format(len(self.corpus)))
 

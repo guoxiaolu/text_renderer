@@ -1,7 +1,7 @@
 # Small font_size will make text looks like blured/prydown
 font_size:
   min: 14
-  max: 23
+  max: 27
 
 # choose Text color range
 # color boundary is in R,G,B format
@@ -49,7 +49,7 @@ crop:
 # Use image in bg_dir as background for text
 img_bg:
   enable: true
-  fraction: 0.5
+  fraction: 0.8
 
 # Not work when random_space applied
 text_border:
@@ -75,9 +75,9 @@ seamless_clone:
   fraction: 0.5
 
 perspective_transform:
-  max_x: 25
-  max_y: 25
-  max_z: 3
+  max_x: 15
+  max_y: 15
+  max_z: 1
 
 blur:
   enable: true
@@ -110,20 +110,20 @@ noise:
     fraction: 0.25
 
 line:
-  enable: false
-  fraction: 0.05
+  enable: true
+  fraction: 0.3
 
   under_line:
-    enable: false
-    fraction: 0.2
+    enable: true
+    fraction: 0.6
 
   table_line:
-    enable: false
-    fraction: 0.3
+    enable: true
+    fraction: 0.35
 
   middle_line:
-    enable: false
-    fraction: 0.5
+    enable: true
+    fraction: 0.05
 
 line_color:
   enable: false

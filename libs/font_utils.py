@@ -8,7 +8,6 @@ from fontTools.unicode import Unicode
 
 from .utils import md5, load_chars
 
-
 def get_font_paths(fonts_dir):
     """
     Load font path recursively from a folder
@@ -109,6 +108,7 @@ def get_fonts_chars(fonts, chars_file):
         cache_file_path = os.path.join(cache_dir, file_md5)
 
         if not os.path.exists(cache_file_path):
+            print(font_path)
             ttf = load_font(font_path)
             _, supported_chars = check_font_chars(ttf, chars)
             print('Save font(%s) supported chars(%d) to cache' % (font_path, len(supported_chars)))
@@ -141,11 +141,22 @@ def get_unsupported_chars(fonts, chars_file):
     for font_path, chars in fonts_chars.items():
         unsupported_chars = list(filter(lambda x: x not in chars, charset))
         fonts_unsupported_chars[font_path] = unsupported_chars
-    return fonts_unsupported_chars
+    return fonts_unsupported_chars, charset
 
 
 if __name__ == '__main__':
-    font_paths = get_font_paths('./data/fonts/chn')
+    # font_paths = get_font_paths('./data/fonts/chn')
+    font_paths = get_font_paths('/Users/guoxiaolu/data/mac_fonts')
     char_file = './data/chars/chn.txt'
     chars = get_fonts_chars(font_paths, char_file)
-    print(chars)
+    cnt = 0
+    import shutil
+    dst_path = '/Users/guoxiaolu/data/mac_chn'
+    for k, v in chars.items():
+        if len(v) > 4000:
+            cnt += 1
+            print(k, len(v))
+            basename = os.path.basename(k)
+            shutil.copy(k, os.path.join(dst_path, basename))
+    print (cnt)
+    # print(chars)

@@ -5,13 +5,14 @@ from libs.utils import load_chars
 
 
 class Corpus(object):
-    def __init__(self, chars_file, corpus_dir=None, length=None):
+    def __init__(self, chars_file, corpus_dir=None, length=None, max_length=None):
         self.corpus_dir = corpus_dir
         self.length = length
         self.corpus = []
 
         self.chars_file = chars_file
         self.charsets = load_chars(chars_file)
+        self.max_length = max_length
 
         self.load()
 

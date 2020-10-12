@@ -6,33 +6,37 @@ import os
 def parse_args():
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('--num_img', type=int, default=20, help="Number of images to generate")
+    parser.add_argument('--num_img', type=int, default=1000000, help="Number of images to generate")
 
-    parser.add_argument('--length', type=int, default=10,
+    parser.add_argument('--length', type=int, default=-1,
                         help='Chars(chn) or words(eng) in a image. For eng corpus mode, default length is 3')
+    parser.add_argument('--max_length', type=int, default=20,
+                        help='max lable length')
 
     parser.add_argument('--clip_max_chars', action='store_true', default=False,
                         help='For training a CRNN model, max number of chars in an image'
                              'should less then the width of last CNN layer.')
 
     parser.add_argument('--img_height', type=int, default=32)
-    parser.add_argument('--img_width', type=int, default=256,
+    parser.add_argument('--img_width', type=int, default=0,
                         help="If 0, output images will have different width")
+    parser.add_argument('--img_max_width', type=int, default=280,
+                        help="If dst image width is higher than img_max_width, not output")
 
-    parser.add_argument('--chars_file', type=str, default='./data/chars/chn.txt',
+    parser.add_argument('--chars_file', type=str, default='./data/chars/char_std_expand.txt',
                         help='Chars allowed to be appear in generated images.')
 
-    parser.add_argument('--config_file', type=str, default='./configs/default.yaml',
+    parser.add_argument('--config_file', type=str, default='./configs/default_small.yaml',
                         help='Set the parameters when rendering images')
 
-    parser.add_argument('--fonts_list', type=str, default='./data/fonts_list/chn.txt',
+    parser.add_argument('--fonts_list', type=str, default='./data/fonts_list/chn_all.txt',
                         help='Fonts file path to use')
 
     parser.add_argument('--bg_dir', type=str, default='./data/bg',
                         help="Some text images(according to your config in yaml file) will"
                              "use pictures in this folder as background")
 
-    parser.add_argument('--corpus_dir', type=str, default="./data/corpus",
+    parser.add_argument('--corpus_dir', type=str, default="/Users/guoxiaolu/data/语料_sentence",
                         help='When corpus_mode is chn or eng, text on image will randomly selected from corpus.'
                              'Recursively find all txt file in corpus_dir')
 
@@ -50,7 +54,7 @@ def parse_args():
 
     parser.add_argument('--viz', action='store_true', default=False)
 
-    parser.add_argument('--strict', action='store_true', default=False,
+    parser.add_argument('--strict', action='store_true', default=True,
                         help="check font supported chars when generating images")
 
     parser.add_argument('--gpu', action='store_true', default=False, help="use CUDA to generate image")

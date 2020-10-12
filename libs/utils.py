@@ -85,6 +85,8 @@ def load_bgs(bg_dir):
 
             # For load non-ascii image_path on Windows
             bg = cv2.imdecode(np.fromfile(image_path, dtype=np.uint8), cv2.IMREAD_COLOR)
+            if bg is None:
+                continue
 
             dst.append(bg)
 

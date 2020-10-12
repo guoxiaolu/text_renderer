@@ -43,11 +43,11 @@ class Renderer(object):
                 self.bgs[i] = cv2.cvtColor(bg, cv2.COLOR_BGR2GRAY)
 
         if self.strict:
-            self.font_unsupport_chars = font_utils.get_unsupported_chars(self.fonts, corpus.chars_file)
+            self.font_unsupport_chars, self.charset = font_utils.get_unsupported_chars(self.fonts, corpus.chars_file)
 
     def gen_img(self, img_index):
         word, font, word_size = self.pick_font(img_index)
-        self.dmsg("after pick font")
+        self.dmsg("after pick font, word:%s, font_path:%s"%(word, font.path))
 
         # Background's height should much larger than raw word image's height,
         # to make sure we can crop full word image after apply perspective
@@ -72,12 +72,23 @@ class Renderer(object):
         if self.debug:
             word_img = draw_box(word_img, text_box_pnts, (155, 255, 0))
 
+        # max_x = 15
+        # max_y = 15
+        # max_z = 1
+        if self.corpus.length == -1:
+            max_x = 3
+            max_y = 3
+            max_z = self.cfg.perspective_transform.max_z
+        else:
+            max_x=self.cfg.perspective_transform.max_x,
+            max_y=self.cfg.perspective_transform.max_y,
+            max_z=self.cfg.perspective_transform.max_z
         word_img, img_pnts_transformed, text_box_pnts_transformed = \
             self.apply_perspective_transform(word_img, text_box_pnts,
-                                             max_x=self.cfg.perspective_transform.max_x,
-                                             max_y=self.cfg.perspective_transform.max_y,
-                                             max_z=self.cfg.perspective_transform.max_z,
-                                             gpu=self.gpu)
+                                            max_x=max_x,
+                                            max_y=max_y,
+                                            max_z=max_z,
+                                            gpu=self.gpu)
 
         self.dmsg("After perspective transform")
 
@@ -182,7 +193,7 @@ class Renderer(object):
 
         if self.out_width == 0:
             padding = random.randint(s_bbox_width // 10, s_bbox_width // 8)
-            dst_width = s_bbox_width + padding * 2
+            dst_width = s_bbox_width + random.randint(0, padding // 2)
 
         s_bbox = (np.around(bbox[0] / scale),
                   np.around(bbox[1] / scale),
@@ -474,7 +485,7 @@ class Renderer(object):
         """
         Resize background, let bg_width>=width, bg_height >=height, and random crop from resized background
         """
-        assert width > height
+        # assert width > height
 
         bg = random.choice(self.bgs)
 
@@ -511,6 +522,7 @@ class Renderer(object):
             word = word[:self.max_chars]
 
         font_path = random.choice(self.fonts)
+        # font_path = "/Users/guoxiaolu/work/code/text_renderer/data/fonts/chn/造字工房尚黑G0v1纤细长体.otf"
 
         if self.strict:
             unsupport_chars = self.font_unsupport_chars[font_path]

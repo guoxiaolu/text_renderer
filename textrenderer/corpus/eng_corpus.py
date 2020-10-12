@@ -26,7 +26,16 @@ class EngCorpus(Corpus):
             print("Word count {}".format(len(self.corpus)))
 
     def get_sample(self, img_index):
-        start = np.random.randint(0, len(self.corpus) - self.length + 1)
-        words = self.corpus[start:start + self.length]
-        word = ' '.join(words)
-        return word
+        cnt = 0
+        while True:
+            if self.length == -1:
+                length = np.random.randint(3, 5)
+            start = np.random.randint(0, len(self.corpus) - length + 1)
+            words = self.corpus[start:start + length]
+            word = ' '.join(words)
+            if len(word) > self.max_length:
+                if cnt >= 10:
+                    return word[:self.max_length]
+                cnt += 1
+                continue
+            return word
