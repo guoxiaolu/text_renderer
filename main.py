@@ -22,8 +22,8 @@ import cv2
 
 from libs.config import load_config
 from libs.timer import Timer
-# from parse_args import parse_args
-from parse_args_en import parse_args
+from parse_args_low import parse_args
+# from parse_args_en import parse_args
 import libs.utils as utils
 import libs.font_utils as font_utils
 from textrenderer.corpus.corpus_utils import corpus_factory
@@ -36,8 +36,9 @@ STOP_TOKEN = 'kill'
 
 flags = parse_args()
 cfg = load_config(flags.config_file)
-
-corpus = corpus_factory(flags.corpus_mode, flags.chars_file, flags.corpus_dir, flags.length, flags.max_length)
+if 'distribute_file' not in flags:
+    flags.distribute_file = None
+corpus = corpus_factory(flags.corpus_mode, flags.chars_file, flags.corpus_dir, flags.length, flags.max_length, flags.distribute_file)
 
 fonts = font_utils.get_font_paths_from_list(flags.fonts_list)
 bgs = utils.load_bgs(flags.bg_dir)

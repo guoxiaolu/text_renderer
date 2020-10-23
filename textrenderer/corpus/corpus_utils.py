@@ -2,14 +2,16 @@ from textrenderer.corpus.chn_corpus import ChnCorpus
 from textrenderer.corpus.eng_corpus import EngCorpus
 from textrenderer.corpus.list_corpus import ListCorpus
 from textrenderer.corpus.random_corpus import RandomCorpus
+from textrenderer.corpus.low_corpus import LowCorpus
 
 
-def corpus_factory(corpus_mode: str, chars_file: str, corpus_dir: str, length: int, max_length: int):
+def corpus_factory(corpus_mode: str, chars_file: str, corpus_dir: str, length: int, max_length: int, distribute_file: str):
     corpus_classes = {
         "random": RandomCorpus,
         "chn": ChnCorpus,
         "eng": EngCorpus,
-        "list": ListCorpus
+        "list": ListCorpus,
+        "low": LowCorpus
     }
 
     if corpus_mode not in corpus_classes.keys():
@@ -21,4 +23,4 @@ def corpus_factory(corpus_mode: str, chars_file: str, corpus_dir: str, length: i
     if length == 10 and corpus_mode == 'eng':
         length = 3
 
-    return corpus_class(chars_file=chars_file, corpus_dir=corpus_dir, length=length, max_length=max_length)
+    return corpus_class(chars_file=chars_file, corpus_dir=corpus_dir, length=length, max_length=max_length, distribute_file=distribute_file)
